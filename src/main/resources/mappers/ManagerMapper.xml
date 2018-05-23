@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dgit.mapper.ManagerMapper">
+
+	<select id="selectByAll" resultType="ManagerVO">
+		select*from project order by number desc;
+	</select>
+	<insert id="insert" parameterType="ManagerVO">
+		insert into project(name,content,startdate,enddate,progress) 
+		values(#{name},#{content},#{startdate},#{enddate},#{progress});
+	</insert>
+	<select id="selectById" resultType="ManagerVO">
+		select*from project where number=#{number}
+	</select>
+	<update id="update" parameterType="ManagerVO">
+		update project set name=#{name},content=#{content},startdate=#{startdate},enddate=#{enddate},progress=#{progress} where number=#{number}
+	</update>
+	<delete id="delete" parameterType="ManagerVO">
+		delete from project where number=#{number}
+	</delete>
+	
+</mapper>
