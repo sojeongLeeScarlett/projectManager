@@ -41,7 +41,7 @@
 				<c:if test="${list.size() > 0 }">
 					<c:forEach var="items" items="${list }">
 						<tr>
-						<td><a href="projectread.do?no=${items.number }">${items.name }</a></td>
+						<td><a href="${pageContext.request.contextPath}/manager/projectRead?number=${items.number }">${items.name }</a></td>
 						<td><fmt:formatDate value="${items.startdate }" pattern="yy-MM-dd"/></td>
 						<td><fmt:formatDate value="${items.enddate }" pattern="yy-MM-dd"/></td>
 						<td>${items.progress }</td>
@@ -49,7 +49,7 @@
 					</c:forEach>
 				</c:if>
 			<tr>
-				<td colspan="4"><a href="write.do">[새 프로젝트 등록]</a></td>
+				<td colspan="4"><a href="${pageContext.request.contextPath}/manager/projectWrite">[새 프로젝트 등록]</a></td>
 			</tr>
 		</table>
 	

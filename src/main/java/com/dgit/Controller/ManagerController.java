@@ -7,10 +7,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dgit.domain.ManagerVO;
@@ -32,10 +36,11 @@ public class ManagerController {
 	}
 	
 	@RequestMapping(value="/projectRead",method=RequestMethod.GET)
-	public void selectById(Model model ,int number) throws SQLException{
+	public String selectById(Model model ,int number) throws SQLException{
 		logger.info("readProject Start..............................");
 		ManagerVO vo = service.selectById(number);
 		model.addAttribute("project", vo);
+		return "/manager/projectRead";
 	}
 	
 	@RequestMapping(value="/projectWrite",method=RequestMethod.GET)
@@ -44,11 +49,20 @@ public class ManagerController {
 		
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="/projectWrite",method=RequestMethod.POST)
-	public String insert(ManagerVO vo) throws SQLException{
+	public ResponseEntity<String> insert(@RequestBody ManagerVO vo) throws SQLException{
 		logger.info("insert Post..............................");
-		service.insert(vo);
-		return "redirect:/manager/projectList";
+		logger.info("시작 : "+vo);
+		
+		ResponseEntity<String> entity = null;
+		try{
+			service.insert(vo);
+			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		}catch(Exception e){
+			entity = new ResponseEntity<String>("fail", HttpStatus.BAD_REQUEST);
+		}
+		return entity;
 	}
 	
 	@RequestMapping(value="/projectModify",method=RequestMethod.GET)
@@ -58,12 +72,20 @@ public class ManagerController {
 		model.addAttribute("project", vo);
 		return "manager/projectModify";
 	}
-	
+	@ResponseBody
 	@RequestMapping(value="/projectModify",method=RequestMethod.POST)
-	public String updatePost(ManagerVO vo) throws SQLException{
+	public ResponseEntity<String> updatePost(@RequestBody ManagerVO vo) throws SQLException{
 		logger.info("update Start Post..............................");
-		service.update(vo);
-		return "redirect:/manager/projectModify?number="+vo.getNumber();
+		ResponseEntity<String> entity = null;
+		try {
+			service.update(vo);
+			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			entity = new ResponseEntity<String>("fail", HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
 	}
 	
 	@RequestMapping(value="/delete",method=RequestMethod.GET)

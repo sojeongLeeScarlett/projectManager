@@ -16,6 +16,47 @@
 		text-align: right;
 	}
 </style>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#save").click(function(){
+
+		var nameVal = $("input[name='name']").val();
+		var startDateVal = $("input[name='startdate']").val();
+		var endDateVal = $("input[name='enddate']").val();
+		var stateVal = $("select[name='progress']").val();
+		var contentVal = $("textarea").val();
+		
+		console.log(nameVal+"/"+startDateVal+"/"+endDateVal+"/"+stateVal+"/"+contentVal);
+		
+		
+		var sendData = {
+			name:nameVal,
+			startdate:startDateVal,
+			enddate:endDateVal,
+			progress:stateVal,
+			content:contentVal
+		};
+		//@RequestBody, JSon.stringify, headers-Context-Type 세트
+			$.ajax({    
+				type : "post",
+				url : "${pageContext.request.contextPath}/manager/projectWrite",
+				data : JSON.stringify(sendData), //json string으로 바꿔줌
+				dataType : "text", //xml, text, json
+				headers : {
+					"Content-Type" : "application/json;charset=UTF-8"
+				},
+				success : function(result) {
+					console.log(result);
+					if(result == "success"){
+						alert("등록되었습니다.");
+						location.href="${pageContext.request.contextPath}/manager/projectList";
+					}
+				}
+			})
+		});
+})
+</script>
 </head>
 <body>
 	<jsp:include page="header.jsp"/>
@@ -37,7 +78,7 @@
 			</select>
 		</p>
 		<p>
-			<input type="submit" value="저장"><a href="projectlist.do"><input type="reset" value="취소"></a>
+			<input type="submit" value="저장" id="save"><a href="${pageContext.request.contextPath}/manager/projectList"><input type="reset" value="취소"></a>
 		</p>
 	
 	<jsp:include page="footer.jsp"/>

@@ -32,7 +32,7 @@
 		$(".del").click(function(){
 			var result = confirm("정말 삭제하시겠습니까?");
 			if(result){
-				location.replace("delete.do?no=${project.number }");
+				location.href= "${pageContext.request.contextPath}/manager/delete?number="+${project.number };
 			}
 		})
 	})
@@ -57,7 +57,7 @@
 			</tr>
 			<tr>
 				<th>종료날짜</th>
-				<td><fmt:formatDate value="${project.startdate }" pattern="yyyy-MM-dd"/></td>
+				<td><fmt:formatDate value="${project.enddate }" pattern="yyyy-MM-dd"/></td>
 			</tr>
 			<tr>
 				<th>상태</th>
@@ -65,9 +65,9 @@
 			</tr>
 		</table>
 		<div class="buttons">
-			<a href="modify.do?no=${project.number }">[수정]</a>
+			<a href="${pageContext.request.contextPath}/manager/projectModify?number=${project.number }">[수정]</a>
 			<a class="del">[삭제]</a>
-			<a href="projectlist.do">[돌아가기]</a>
+			<a href="${pageContext.request.contextPath}/manager/projectList">[돌아가기]</a>
 		</div>
 		
 	<jsp:include page="footer.jsp"/>
